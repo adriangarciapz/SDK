@@ -1,5 +1,5 @@
 {
-    "name": "adrian/mock",
+    "name": "adrianudt/mock",
     "description": "Mock composer project",
     "license": "MIT",
     "autoload": {
