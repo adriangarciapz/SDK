@@ -1,0 +1,20 @@
+{
+    "name": "adrian/mock",
+    "description": "Mock composer project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "HelloWorld\\": "src/HelloWorld"
+        }
+    },
+    "authors": [
+        {
+            "name": "Adrián García Pérez",
+            "email": "adrian.garcia@undostres.com.mx"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
