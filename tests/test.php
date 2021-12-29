@@ -2,6 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Composer autoload
 
-use HelloWorld\SayHello;
+use HelloWorld\CreatePayment;
 
-echo SayHello::world();
+echo CreatePayment::create();
