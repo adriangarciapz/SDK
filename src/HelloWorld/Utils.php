@@ -41,4 +41,25 @@ class Utils {
     return $serverResponse;
   }
 
+  public static function decrypt($base64Str, $merchantEncryptKey) {
+    $dataObj = null;
+    try {
+      $key = substr($merchantEncryptKey, 0, 32);
+      $vector = substr($merchantEncryptKey, 32);
+
+      $binaryKey = hex2bin($key);
+      $binaryVector = hex2bin($vector);
+
+      $jsonDecrypted = openssl_decrypt(base64_decode($base64Str), "aes-128-cbc", $binaryKey, 1, $binaryVector);
+      if ($jsonDecrypted == false) {
+        echo "Error here";
+      }
+
+      $dataObj = json_decode($jsonDecrypted,true);
+    } catch (Exception $e) {
+      echo "Error";
+    }
+    return $dataObj;
+  }
+
 }

@@ -36,7 +36,7 @@ class CreatePayment {
     $encryptedDataStr = substr($response->paymentUrl, 0, $merchantStrPos);
     $encryptedDataStrLen = strlen($encryptedDataStr);
 
-    $decryptedData = self::decrypt(rawurldecode($encryptedDataStr), "313233343536373839306162636465664A4B4C4D4E4F5A6A6B6C6D6E6F707172");
+    $decryptedData = Utils::decrypt(rawurldecode($encryptedDataStr), "313233343536373839306162636465664A4B4C4D4E4F5A6A6B6C6D6E6F707172");
 
     $merchantId = rawurldecode(substr($response->paymentUrl, $encryptedDataStrLen + $merchantStrLen));
 
@@ -44,28 +44,6 @@ class CreatePayment {
     echo $decryptedData["returnUrl"] . "\n";
     echo $merchantId . "\n";
 
-  }
-
-  public static function decrypt($base64Str, $merchantEncryptKey)
-  {
-    $dataObj = null;
-    try {
-      $key = substr($merchantEncryptKey, 0, 32);
-      $vector = substr($merchantEncryptKey, 32);
-
-      $binaryKey = hex2bin($key);
-      $binaryVector = hex2bin($vector);
-
-      $jsonDecrypted = openssl_decrypt(base64_decode($base64Str), "aes-128-cbc", $binaryKey, 1, $binaryVector);
-      if ($jsonDecrypted == false) {
-        echo "Error here";
-      }
-
-      $dataObj = json_decode($jsonDecrypted,true);
-    } catch (Exception $e) {
-      echo "Error";
-    }
-    return $dataObj;
   }
 
 }
