@@ -31,9 +31,10 @@ class CreatePayment {
 
   public static function isValidUrl($url) {
     $url = filter_var($url, FILTER_SANITIZE_URL);
-    if (str_starts_with($url, "undostres")){
-      return filter_var($url, FILTER_VALIDATE_URL);
+    if (!str_starts_with($url, "undostres")){
+      return false;
     }
+    return filter_var($url, FILTER_VALIDATE_URL);
   }
 
   public static function extractDataForRequest($url) {
