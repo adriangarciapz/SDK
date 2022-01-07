@@ -24,7 +24,15 @@ class CreatePayment {
       return;
     }
 
+    echo "Is a valid URL? : " . (self::isValidUrl($response->paymentUrl) ? "Yes" : "No") . "\n";
+
     self::extractDataFromPaymentUrl($response->paymentUrl);
+  }
+
+  public static function isValidUrl($url) {
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+
+    return filter_var($url, FILTER_VALIDATE_URL);
   }
 
   public static function extractDataFromPaymentUrl($url) {
