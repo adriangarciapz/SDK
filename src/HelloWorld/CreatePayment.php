@@ -26,16 +26,17 @@ class CreatePayment {
 
     echo "Is a valid URL? : " . (self::isValidUrl($response->paymentUrl) ? "Yes" : "No") . "\n";
 
-    self::extractDataFromPaymentUrl($response->paymentUrl);
+    self::extractDataForRequest($response->paymentUrl);
   }
 
   public static function isValidUrl($url) {
     $url = filter_var($url, FILTER_SANITIZE_URL);
-
-    return filter_var($url, FILTER_VALIDATE_URL);
+    if (str_starts_with($url, "undostres")){
+      return filter_var($url, FILTER_VALIDATE_URL);
+    }
   }
 
-  public static function extractDataFromPaymentUrl($url) {
+  public static function extractDataForRequest($url) {
     $stageUrlStrLen = strlen(self::STAGE_URL_STR);
     $url = substr($url, $stageUrlStrLen);
     $url = self::STAGE_URL_STR . urldecode($url);
