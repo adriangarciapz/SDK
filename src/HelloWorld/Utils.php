@@ -4,7 +4,7 @@ namespace HelloWorld;
 
 class Utils {
   
-  public static function request($url, $payloadString, $appKey, $appToken) {
+  public static function request($url, $jsonPayload, $appKey, $appToken) {
     $serverResponse = null;
     $curl = null;
     try {
@@ -18,7 +18,7 @@ class Utils {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>$payloadString,
+            CURLOPT_POSTFIELDS =>$jsonPayload,
             CURLOPT_HTTPHEADER => array(
                 "superappkey" . ": " . $appKey,
                 "superapptoken" . ": " . $appToken,
