@@ -2,9 +2,8 @@
 
 require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Composer autoload
 
-use HelloWorld\CreatePayment;
-use HelloWorld\CancelPayment;
+use UDT\Payment\Payment;
 
 $pid = date("Ymd") . '_' . rand(1, 10000);
-echo CreatePayment::create($pid);
+echo Payment::create($pid);
 //echo CancelPayment::cancel($pid);

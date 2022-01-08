@@ -1,8 +1,10 @@
 <?php
 
-namespace HelloWorld;
+namespace UDT\Payment;
 
-class CreatePayment {
+use UDT\Utils;
+
+class Payment {
 
   const SUPERAPP_PAYMENTS_URL = "localhost:8081/api/v1/superapp/payments";
   const APP_KEY   = "eruceSemuserp_redirect";
@@ -99,6 +101,20 @@ class CreatePayment {
     echo "Is a valid URL? : " . (self::isValidUrl($response->paymentUrl) ? "Yes" : "No") . "\n";
 
     self::extractDataForRequest($response->paymentUrl);
+  }
+
+  public static function cancel($pid) {
+
+    $url = 'localhost:8081/api/v1/superapp/payment_' . $pid . '/cancellations';
+    $payloadString = "{\n    \"paymentId\": \"payment_$pid\",\n    \"requestId\": \"x\"\n}";
+
+    $appKey = "eruceSemuserp_redirect";
+    $appToken = "eruceSemuserp_redirect";
+
+    $cancelResponse = Utils::request($url, $payloadString, $appKey, $appToken);
+    if (!(intval($cancelResponse->cancellationId) > 0)) {
+	    echo "Wrong cancel response";
+    }
   }
 
   public static function isValidUrl($url) {
