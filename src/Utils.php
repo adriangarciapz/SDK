@@ -3,6 +3,14 @@
 namespace UDT;
 
 class Utils {
+
+  public static function isValidUrl($url) {
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+    if (!str_starts_with($url, "undostres")){
+      return false;
+    }
+    return filter_var($url, FILTER_VALIDATE_URL);
+  }
   
   public static function request($url, $jsonPayload, $appKey, $appToken) {
     $serverResponse = null;
@@ -41,11 +49,11 @@ class Utils {
     return $serverResponse;
   }
 
-  public static function decrypt($base64Str, $merchantEncryptKey) {
+  public static function decryptPaymentData($base64Str, $encrypKey) {
     $dataObj = null;
     try {
-      $key = substr($merchantEncryptKey, 0, 32);
-      $vector = substr($merchantEncryptKey, 32);
+      $key = substr($encrypKey, 0, 32);
+      $vector = substr($encrypKey, 32);
 
       $binaryKey = hex2bin($key);
       $binaryVector = hex2bin($vector);
