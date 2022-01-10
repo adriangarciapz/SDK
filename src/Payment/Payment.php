@@ -18,22 +18,22 @@ class Payment {
   private $payloadStr;
 
   public function setPayload($payload) {
-    $this->payload = $payload;
-    $this->payloadStr = json_encode($payload);
+    $this->payloadObj = $payload;
+    $this->payloadJSON = json_encode($payload);
+
+    if (json_last_error() != JSON_ERROR_NONE)
+      throw new \InvalidArgumentException("The payload is not JSON encodable :: " . json_last_error_msg());
   }
 
   public function getPayload() {
-    return $this->payload;
+    return $this->payloadObj;
   }
 
   public function exec() {
+    if (!isset($this->payloadJSON))
+      throw new \Exception("Payload not set");
 
-    if (!isset($this->payloadStr)) {
-      echo "Payload not set\n";
-      return;
-    }
-
-    return Utils::request(self::SUPERAPP_PAYMENTS_URL, $this->payloadStr, self::APP_KEY, self::APP_TOKEN);
+    return Utils::request(self::SUPERAPP_PAYMENTS_URL, $this->payloadJSON, self::APP_KEY, self::APP_TOKEN);
   }
 
   public function cancel($pid) {

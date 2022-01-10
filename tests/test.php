@@ -82,8 +82,16 @@ $payload = [
 ];
 
 $payment = new Payment();
-$payment->setPayload($payload);
-$response = $payment->exec();
+
+try {
+  $payment->setPayload($payload);
+  $response = $payment->exec();
+}
+catch (Exception $e) {
+  echo $e->getMessage();
+  return;
+}
+
 
 echo "Is a valid URL? : " . (Utils::isValidUrl($response->paymentUrl) ? "Yes" : "No") . "\n";
 
