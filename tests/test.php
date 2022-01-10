@@ -7,7 +7,7 @@ use UDT\Utils;
 
 $pid = date("Ymd") . '_' . rand(1, 10000);
 
-$paymentAmount = 1;
+$paymentAmount = 20;
 
 $payload = [
   "reference" => "reference_$pid",
@@ -90,6 +90,28 @@ try {
 
   $decodedUrl = Payment::decodePaymentUrl($response->paymentUrl);
   var_dump($decodedUrl);
+}
+catch (Exception $e) {
+  echo $e->getMessage();
+}
+
+$refundAmount = 1;
+
+$payloadForRefund = [
+	"paymentId" => "payment_$pid",
+	"transactionId" => "transaction_$pid",
+	"settleId" => "x",
+	"value" => $refundAmount,
+	"requestId" => "refund_$pid"
+];
+
+$payment = new Payment();
+
+try {
+  $payment->setPayload($payloadForRefund);
+  $payment->setRefundId("payment_$pid");
+  $response = $payment->requestRefund();
+  var_dump($response);
 }
 catch (Exception $e) {
   echo $e->getMessage();
