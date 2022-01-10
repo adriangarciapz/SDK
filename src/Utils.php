@@ -48,25 +48,24 @@ class Utils {
     return $decodedJSON;
   }
 
-  public static function decryptPaymentData($base64Str, $encrypKey) {
-    $dataObj = null;
-    try {
-      $key = substr($encrypKey, 0, 32);
-      $vector = substr($encrypKey, 32);
+  public static function decryptPaymentData($base64Str, $encryptKey) {    
+    $key = substr($encryptKey, 0, 32);
+    $vector = substr($encryptKey, 32);
 
-      $binaryKey = hex2bin($key);
-      $binaryVector = hex2bin($vector);
+    $binaryKey = hex2bin($key);
+    $binaryVector = hex2bin($vector);
 
-      $jsonDecrypted = openssl_decrypt(base64_decode($base64Str), "aes-128-cbc", $binaryKey, 1, $binaryVector);
-      if ($jsonDecrypted == false) {
-        echo "Error here";
-      }
+    $decodedStr = base64_decode($base64Str);
 
-      $dataObj = json_decode($jsonDecrypted,true);
-    } catch (Exception $e) {
-      echo "Error";
-    }
-    return $dataObj;
+    $jsonDecrypted = openssl_decrypt($decodedStr, "aes-128-cbc", $binaryKey, 1, $binaryVector);
+    if ($jsonDecrypted == false)
+      throw new \Exception("An error occurred while trying to decrypt the data");
+
+    $data = json_decode($jsonDecrypted, true);
+    if (json_last_error() != JSON_ERROR_NONE)
+      throw new \Exception("The data is not JSON decodable :: " . json_last_error_msg());
+      
+    return $data;
   }
 
 }
