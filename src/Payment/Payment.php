@@ -33,11 +33,14 @@ class Payment {
     return $this->payloadObj;
   }
 
-  public function exec() {
+  public function requestPayment() {
     if (!isset($this->payloadJSON))
       throw new \Exception("Payload not set");
 
-    return Utils::request($this->CREATE_ENDPOINT, $this->payloadJSON, self::APP_KEY, self::APP_TOKEN);
+    $response = Utils::request($this->CREATE_ENDPOINT, $this->payloadJSON, self::APP_KEY, self::APP_TOKEN);
+    Utils::validateResponse($response, "SuperappCreatePaymentResponse.json");
+
+    return $response;
   }
 
   public function setRefundId($id) {

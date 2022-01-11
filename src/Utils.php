@@ -2,7 +2,13 @@
 
 namespace UDT;
 
+use Opis\JsonSchema\{
+  Validator, Schema
+};
+
 class Utils {
+
+  const SCHEMAS_DIR = "./Schemas/";
 
   public static function isValidUrl($url) {
     $url = filter_var($url, FILTER_SANITIZE_URL);
@@ -46,6 +52,20 @@ class Utils {
       throw new \Exception("The response data is not JSON decodable :: " . json_last_error_msg());
 
     return $decodedJSON;
+  }
+
+  public static function validateResponse($data, $schemaFile) {
+    $validator = new Validator();
+
+    $validator->resolver()->registerFile(
+        "mySchema", 
+        self::SCHEMAS_DIR . $schemaFile
+    );
+
+    $result = $validator->validate($data, "mySchema");
+
+    if (!$result->isValid())
+        throw new \Exception($result->getFirstError());
   }
 
   public static function decryptPaymentData($base64Str, $encryptKey) {    
