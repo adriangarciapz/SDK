@@ -22,7 +22,7 @@
       "paymentUrl": {
           "type": "string",
           "minLength": 1,
-          "pattern": "^undostres:\/\/home\?stage=superAppPaymentIntent&url=([a-zA-Z0-9\%]+)*(payment.php)([a-zA-Z0-9\%]+)*$"
+          "pattern": "^undostres:\\\/\\\/home\\?stage=superAppPaymentIntent&url=([a-zA-Z0-9\\%])*(payment.php)([a-zA-Z0-9\\%])*$"
       },
       "delayToAutoSettle": {
         "type": "number",

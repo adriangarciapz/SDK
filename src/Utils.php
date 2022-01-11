@@ -8,7 +8,7 @@ use Opis\JsonSchema\{
 
 class Utils {
 
-  const SCHEMAS_DIR = "./Schemas/";
+  const SCHEMAS_DIR = __DIR__ . "/Schemas/";
 
   public static function isValidUrl($url) {
     $url = filter_var($url, FILTER_SANITIZE_URL);
@@ -54,53 +54,12 @@ class Utils {
     return $decodedJSON;
   }
 
-  public static function validateResponse($data) {
+  public static function validateResponse($data, $schemaFile) {
     $validator = new Validator();
 
-    $schema = Helper::toJSON([
-      "type" => "object",
-      "required" => [
-        "code",
-        "message",
-        "paymentId",
-        "status",
-        "paymentUrl",
-        "delayToAutoSettle",
-        "delayToCancel"
-      ],
-      "properties" => [
-        "code" => [
-            "type" => "number",
-            "minLength" => 1
-        ],
-        "message" => [
-            "type" => "string",
-            "minLength" => 1
-        ],
-        "paymentId" => [
-            "type" => "string",
-            "minimum" => 1
-        ],
-        "status" => [
-            "type" => "string",
-            "minLength" => 1,
-            "pattern" => "undefined"
-        ],
-        "paymentUrl" => [
-            "type" => "string",
-            "minLength" => 1,
-            "pattern"=> "^undostres:\/\/home\?stage=superAppPaymentIntent&url=([a-zA-Z0-9\%]+)*(payment.php)([a-zA-Z0-9\%]+)*$"
-        ],
-        "delayToAutoSettle" => [
-          "type" => "number",
-          "minLength" => 1
-        ],
-        "delayToCancel" => [
-          "type" => "number",
-          "minLength" => 1
-        ]
-      ]
-    ]);
+    $schemaPath = self::SCHEMAS_DIR . $schemaFile;
+    $schemaJSON = file_get_contents($schemaPath);
+    $schema = Helper::toJSON($schemaJSON);
 
     $result = $validator->validate($data, $schema);
 
