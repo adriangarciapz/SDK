@@ -49,7 +49,7 @@ class Payment {
     if (!isset($this->payloadJSON))
       throw new \Exception("Payload not set");
 
-    if (strpos($this->REFUND_ENDPOINT, "{id}") === false)
+    if (strpos($this->REFUND_ENDPOINT, "{id}") !== false)
       throw new \Exception("RefundId not set in URL");
 
     return Utils::request($this->REFUND_ENDPOINT, $this->payloadJSON, self::APP_KEY, self::APP_TOKEN);
