@@ -85,7 +85,7 @@ $payment = new Payment();
 
 try {
   $payment->setPayload($payload);
-  $response = $payment->exec();
+  $response = $payment->requestPayment();
   echo "Is a valid URL? : " . (Utils::isValidUrl($response->paymentUrl) ? "Yes" : "No") . "\n";
 
   $decodedUrl = Payment::decodePaymentUrl($response->paymentUrl);

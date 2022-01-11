@@ -3,7 +3,7 @@
 namespace UDT;
 
 use Opis\JsonSchema\{
-  Validator, Schema
+  Validator, Helper
 };
 
 class Utils {
@@ -54,18 +54,58 @@ class Utils {
     return $decodedJSON;
   }
 
-  public static function validateResponse($data, $schemaFile) {
+  public static function validateResponse($data) {
     $validator = new Validator();
 
-    $validator->resolver()->registerFile(
-        "mySchema", 
-        self::SCHEMAS_DIR . $schemaFile
-    );
+    $schema = Helper::toJSON([
+      "type" => "object",
+      "required" => [
+        "code",
+        "message",
+        "paymentId",
+        "status",
+        "paymentUrl",
+        "delayToAutoSettle",
+        "delayToCancel"
+      ],
+      "properties" => [
+        "code" => [
+            "type" => "number",
+            "minLength" => 1
+        ],
+        "message" => [
+            "type" => "string",
+            "minLength" => 1
+        ],
+        "paymentId" => [
+            "type" => "string",
+            "minimum" => 1
+        ],
+        "status" => [
+            "type" => "string",
+            "minLength" => 1,
+            "pattern" => "undefined"
+        ],
+        "paymentUrl" => [
+            "type" => "string",
+            "minLength" => 1,
+            "pattern"=> "^undostres:\/\/home\?stage=superAppPaymentIntent&url=([a-zA-Z0-9\%]+)*(payment.php)([a-zA-Z0-9\%]+)*$"
+        ],
+        "delayToAutoSettle" => [
+          "type" => "number",
+          "minLength" => 1
+        ],
+        "delayToCancel" => [
+          "type" => "number",
+          "minLength" => 1
+        ]
+      ]
+    ]);
 
-    $result = $validator->validate($data, "mySchema");
+    $result = $validator->validate($data, $schema);
 
     if (!$result->isValid())
-        throw new \Exception($result->getFirstError());
+        throw new \Exception($result->error());
   }
 
   public static function decryptPaymentData($base64Str, $encryptKey) {    
