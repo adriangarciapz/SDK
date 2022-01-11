@@ -95,13 +95,13 @@ catch (Exception $e) {
   echo $e->getMessage();
 }
 
-$refundAmount = 1;
+$refundAmount = 5.21578;
 
 $payloadForRefund = [
 	"paymentId" => "payment_$pid",
 	"transactionId" => "transaction_$pid",
 	"settleId" => "x",
-	"value" => $refundAmount,
+	"value" => strval(round(floatval($refundAmount), 2)),
 	"requestId" => "refund_$pid"
 ];
 
