@@ -8,7 +8,6 @@ class Payment {
 
   const HOST = "localhost:8081";
   const CREATE_URL = "/api/v1/superapp/payments";
-  const REFUND_URL = "/api/v1/superapp/{id}/refunds";
   const APP_KEY   = "eruceSemuserp_redirect";
   const APP_TOKEN = "eruceSemuserp_redirect";
   const STAGE_URL_STR = "undostres://home?stage=superAppPaymentIntent&url=";
@@ -17,7 +16,6 @@ class Payment {
   const DECRYPT_KEY = "313233343536373839306162636465664A4B4C4D4E4F5A6A6B6C6D6E6F707172";
 
   private $CREATE_ENDPOINT = self::HOST . self::CREATE_URL;
-  private $REFUND_ENDPOINT = self::HOST . self::REFUND_URL;
   private $payloadObj;
   private $payloadStr;
 
@@ -41,21 +39,6 @@ class Payment {
     Utils::validateResponse($response, "SuperappCreatePaymentResponse.json");
 
     return $response;
-  }
-
-  public function setRefundId($id) {
-    $this->REFUND_ENDPOINT = self::HOST . self::REFUND_URL;
-    $this->REFUND_ENDPOINT = str_replace("{id}", $id, $this->REFUND_ENDPOINT);
-  }
-
-  public function requestRefund() {
-    if (!isset($this->payloadJSON))
-      throw new \Exception("Payload not set");
-
-    if (strpos($this->REFUND_ENDPOINT, "{id}") !== false)
-      throw new \Exception("RefundId not set in URL");
-
-    return Utils::request($this->REFUND_ENDPOINT, $this->payloadJSON, self::APP_KEY, self::APP_TOKEN);
   }
 
   public static function decodePaymentUrl($url) {

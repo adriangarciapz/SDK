@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Composer autoload
 
 use UDT\Payment\Payment;
+use UDT\Refund\Refund;
 use UDT\Utils;
 
 $pid = date("Ymd") . '_' . rand(1, 10000);
@@ -97,21 +98,14 @@ catch (Exception $e) {
 
 $refundAmount = 5.215;
 
-$payloadForRefund = [
-	"paymentId" => "payment_$pid",
-	"transactionId" => "transaction_$pid",
-	"settleId" => "x",
-	"value" => round(floatval($refundAmount), 2),
-	"requestId" => "refund_$pid"
-];
-
-$payment = new Payment();
-
 try {
-  $payment->setPayload($payloadForRefund);
-  $payment->setRefundId("payment_$pid");
-  $response = $payment->requestRefund();
-  var_dump($response);
+  $refund = new Refund(
+    "payment_$pid", 
+    "transaction_$pid", 
+    round(floatval($refundAmount), 2)
+  );
+
+  var_dump($refund->requestRefund());
 }
 catch (Exception $e) {
   echo $e->getMessage();
