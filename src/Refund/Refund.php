@@ -6,19 +6,19 @@ use UDT\Utils;
 
 class Refund {
 
-  const HOST = "localhost:8081";
   const REFUND_URL = "/api/v1/superapp/{paymentId}/cancellations";
-  const APP_KEY   = "eruceSemuserp_redirect";
-  const APP_TOKEN = "eruceSemuserp_redirect";
 
-  private $REFUND_ENDPOINT = self::HOST . self::REFUND_URL;
+  private $refundEndpoint;
   private $paymentId;
   private $transactionId;
   private $value;
   private $requestId;
   private $payloadJSON;
 
-  public function __construct($paymentId, $transactionId, $value) {
+  public function __construct($host, $appKey, $appToken, $paymentId, $transactionId, $value) {
+    $this->refundEndpoint = $host . self::REFUND_URL;
+    $this->appKey        = $appKey;
+    $this->appToken      = $appToken;
     $this->paymentId     = $paymentId;
     $this->transactionId = $transactionId;
     $this->value         = $value;
@@ -33,7 +33,7 @@ class Refund {
 
     $this->createPayloadJSON($payload);
 
-    $this->createRefundUrl($paymentId);
+    $this->createRefundUrl($host, $paymentId);
   }
 
   public function getPaymentId() {
@@ -68,9 +68,9 @@ class Refund {
     return $this->payloadJSON;
   }
 
-  public function createRefundUrl($paymentId) {
-    $this->REFUND_ENDPOINT = self::HOST . self::REFUND_URL;
-    $this->REFUND_ENDPOINT = str_replace("{paymentId}", $paymentId, $this->REFUND_ENDPOINT);
+  public function createRefundUrl($host, $paymentId) {
+    $this->refundEndpoint = $this->host . self::REFUND_URL;
+    $this->refundEndpoint = str_replace("{paymentId}", $paymentId, $this->refundEndpoint);
   }
 
   public function createPayloadJSON($payload) {
@@ -84,10 +84,10 @@ class Refund {
     if (!isset($this->payloadJSON))
       throw new \Exception("Payload not set");
 
-    if (strpos($this->REFUND_ENDPOINT, "{paymentId}") !== false)
+    if (strpos($this->refundEndpoint, "{paymentId}") !== false)
       throw new \Exception("paymentId not set in URL");
 
-    return Utils::request($this->REFUND_ENDPOINT, $this->payloadJSON, self::APP_KEY, self::APP_TOKEN);
+    return Utils::request($this->refundEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
   }
 
 }

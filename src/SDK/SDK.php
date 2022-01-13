@@ -46,6 +46,20 @@ class SDK {
   }
 
   public function createRefund($refundData) {
-    return "dummy";
+    try {
+      $refund = new Refund(
+        $this->host,
+        $this->appKey,
+        $this->appToken,
+        $refundData["paymentId"],
+        $refundData["transactionId"],
+        round(floatval($refundData["value"]), 2)
+      );
+
+      return json_encode($refund->requestRefund());
+    }
+    catch (Exception $e) {
+      return json_encode($e->getMessage());
+    }
   }
 }
