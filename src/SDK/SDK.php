@@ -36,29 +36,51 @@ class SDK {
   public function handlePayload() {
     $requestJSON = file_get_contents("php://input");
 
-    $body = json_decode($requestJSON, true);
-    
-    if(isset($body["payment"]))
-      return $this->createPayment($body["payment"]);
+    $response = [
+      "code" => 400,
+      "body" => ["status" => "error"]
+      ];
 
-    else if(isset($body["cancel"]))
-      return $this->createRefund($body["cancel"]);
+    $body = json_decode($requestJSON, true);
+
+    try {
+      if(isset($body["payment"]))
+        $response = $this->createPayment($body["payment"]);
+
+      else if(isset($body["cancel"]))
+        $response = $this->createRefund($body["cancel"]);
+    }
+    catch (\Exception $e) {
+      $response = [
+        "code" => $e->getCode(),
+        "body" => [
+          "status" => "error",
+          "error" => $e->getMessage()
+        ]
+      ];
+    }
+    finally {
+      return $response;
+    }
   }
 
   public function createPayment($paymentData) {
     $payment = new Payment($this->host, $this->appKey, $this->appToken);
 
-    try {
-        $payment->setPayload($paymentData);
-        $response = $payment->requestPayment();
+    $payment->setPayload($paymentData);
+    $response = $payment->requestPayment();
 
-        $queryParams = [];
-        parse_str(parse_url($response->paymentUrl)['query'], $queryParams);
-        return json_encode($queryParams);
+    $queryParams = [];
+    parse_str(parse_url($response->paymentUrl)['query'], $queryParams);
 
-    } catch (Exception $e) {
-        return json_encode($e->getMessage());
-    }
+    $response = [
+      "code" => 200,
+      "body" => [
+        "status" => "success",
+        "queryParams" => $queryParams
+        ]
+      ];
+    return $response;
   }
 
   public function createRefund($refundData) {

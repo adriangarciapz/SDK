@@ -40,16 +40,17 @@ class Utils {
     $result = curl_exec($curl);
 
     if (curl_errno($curl))
-      throw new \Exception("cURL error :: " . curl_error($curl));
-
-    if (curl_getinfo($curl, CURLINFO_HTTP_CODE) != 200)
-      throw new \Exception("cURL unexpected HTTP code :: " . $result);
+      throw new \Exception("cURL error :: " . curl_error($curl), 400);
 
     curl_close($curl);
 
     $decodedJSON = json_decode($result);
     if (json_last_error() != JSON_ERROR_NONE)
-      throw new \Exception("The response data is not JSON decodable :: " . json_last_error_msg());
+      throw new \Exception("The response data is not JSON decodable :: " . json_last_error_msg(), 500);
+
+    $resultArray = json_decode($result, true);
+    if ($resultArray["code"] != 200)
+      throw new \Exception($resultArray["message"], $resultArray["code"]);
 
     return $decodedJSON;
   }

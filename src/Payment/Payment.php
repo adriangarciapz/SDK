@@ -25,7 +25,9 @@ class Payment {
     $this->payloadJSON = json_encode($payload);
 
     if (json_last_error() != JSON_ERROR_NONE)
-      throw new \InvalidArgumentException("The payload is not JSON encodable :: " . json_last_error_msg());
+      throw new \InvalidArgumentException(
+        "The payload is not JSON encodable :: " . json_last_error_msg(),
+        400);
   }
 
   public function getPayload() {
@@ -34,7 +36,7 @@ class Payment {
 
   public function requestPayment() {
     if (!isset($this->payloadJSON))
-      throw new \Exception("Payload not set");
+      throw new \Exception("Payload not set", 400);
 
     $response = Utils::request($this->createEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
     // Utils::validateResponse($response, "SuperappCreatePaymentResponse.json");
