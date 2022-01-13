@@ -67,24 +67,4 @@ class Utils {
   //       throw new \Exception($result->error());
   // }
 
-  public static function decryptPaymentData($base64Str, $encryptKey) {    
-    $key = substr($encryptKey, 0, 32);
-    $vector = substr($encryptKey, 32);
-
-    $binaryKey = hex2bin($key);
-    $binaryVector = hex2bin($vector);
-
-    $decodedStr = base64_decode($base64Str);
-
-    $jsonDecrypted = openssl_decrypt($decodedStr, "aes-128-cbc", $binaryKey, 1, $binaryVector);
-    if ($jsonDecrypted == false)
-      throw new \Exception("An error occurred while trying to decrypt the data");
-
-    $data = json_decode($jsonDecrypted, true);
-    if (json_last_error() != JSON_ERROR_NONE)
-      throw new \Exception("The data is not JSON decodable :: " . json_last_error_msg());
-      
-    return $data;
-  }
-
 }
