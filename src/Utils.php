@@ -3,7 +3,7 @@
 namespace UDT;
 
 use Opis\JsonSchema\{
-  Validator, Helper
+  Validator, Schema
 };
 
 class Utils {
@@ -55,17 +55,18 @@ class Utils {
     return $decodedJSON;
   }
 
-  // public static function validateResponse($data, $schemaFile) {
-  //   $validator = new Validator();
 
-  //   $schemaPath = self::SCHEMAS_DIR . $schemaFile;
-  //   $schemaJSON = file_get_contents($schemaPath);
-  //   $schema = Helper::toJSON($schemaJSON);
+  public static function validateResponse($data, $schemaPath) {
+    $schemaPath = self::SCHEMAS_DIR . $schemaPath;
+    $schema = Schema::fromJsonString(file_get_contents($schemaPath));
 
-  //   $result = $validator->validate($data, $schema);
+    $validator = new Validator();
 
-  //   if (!$result->isValid())
-  //       throw new \Exception($result->error());
-  // }
+    $result = $validator->schemaValidation($data, $schema);
+
+    if (!$result->isValid()) {
+      throw new \Exception($result->error());
+    }
+  }
 
 }
