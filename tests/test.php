@@ -96,17 +96,17 @@ catch (Exception $e) {
   echo $e->getMessage();
 }
 
-$refundAmount = 5.215;
+// $refundAmount = 5.215;
 
-try {
-  $refund = new Refund(
-    "payment_$pid", 
-    "transaction_$pid", 
-    round(floatval($refundAmount), 2)
-  );
+// try {
+//   $refund = new Refund(
+//     "payment_$pid", 
+//     "transaction_$pid", 
+//     round(floatval($refundAmount), 2)
+//   );
 
-  var_dump($refund->requestRefund());
-}
-catch (Exception $e) {
-  echo $e->getMessage();
-}
+//   var_dump($refund->requestRefund());
+// }
+// catch (Exception $e) {
+//   echo $e->getMessage();
+// }

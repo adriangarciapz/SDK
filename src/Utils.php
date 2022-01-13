@@ -54,18 +54,18 @@ class Utils {
     return $decodedJSON;
   }
 
-  public static function validateResponse($data, $schemaFile) {
-    $validator = new Validator();
+  // public static function validateResponse($data, $schemaFile) {
+  //   $validator = new Validator();
 
-    $schemaPath = self::SCHEMAS_DIR . $schemaFile;
-    $schemaJSON = file_get_contents($schemaPath);
-    $schema = Helper::toJSON($schemaJSON);
+  //   $schemaPath = self::SCHEMAS_DIR . $schemaFile;
+  //   $schemaJSON = file_get_contents($schemaPath);
+  //   $schema = Helper::toJSON($schemaJSON);
 
-    $result = $validator->validate($data, $schema);
+  //   $result = $validator->validate($data, $schema);
 
-    if (!$result->isValid())
-        throw new \Exception($result->error());
-  }
+  //   if (!$result->isValid())
+  //       throw new \Exception($result->error());
+  // }
 
   public static function decryptPaymentData($base64Str, $encryptKey) {    
     $key = substr($encryptKey, 0, 32);
