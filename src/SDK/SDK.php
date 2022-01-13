@@ -26,7 +26,7 @@ class SDK {
       return $this->createPayment($body["payment"]);
 
     else if(isset($body["cancel"]))
-      return $this->createCancel($body["cancel"]);
+      return $this->createRefund($body["cancel"]);
   }
 
   public function createPayment($paymentData) {
