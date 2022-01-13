@@ -6,7 +6,7 @@ use UDT\Utils;
 
 class Payment {
 
-  const HOST = "localhost:8081";
+  const HOST = "test.undostres.com.mx";
   const CREATE_URL = "/api/v1/superapp/payments";
   const APP_KEY   = "eruceSemuserp_redirect";
   const APP_TOKEN = "eruceSemuserp_redirect";
@@ -29,6 +29,10 @@ class Payment {
 
   public function getPayload() {
     return $this->payloadObj;
+  }
+
+  public function setEndp($end) {
+    $this->CREATE_ENDPOINT = $end;
   }
 
   public function requestPayment() {
