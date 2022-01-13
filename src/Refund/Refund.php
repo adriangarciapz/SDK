@@ -69,7 +69,7 @@ class Refund {
   }
 
   public function createRefundUrl($host, $paymentId) {
-    $this->refundEndpoint = $this->host . self::REFUND_URL;
+    $this->refundEndpoint = $host . self::REFUND_URL;
     $this->refundEndpoint = str_replace("{paymentId}", $paymentId, $this->refundEndpoint);
   }
 
