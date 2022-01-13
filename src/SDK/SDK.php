@@ -7,14 +7,30 @@ use UDT\Refund\Refund;
 
 class SDK {
 
-  public function __construct($appKey, $appToken) {
-    if (isset($_ENV["DEV"]) && $_ENV["DEV"] == true)
-      $this->host = "localhost:8081";
-    else
-      $this->host = "test.undostres.com.mx";
-    
+  public function __construct($appKey, $appToken, $env = "dev") {
     $this->appKey   = $appKey;
     $this->appToken = $appToken;
+    $this->env      = $env;
+
+    $this->host = self::getHost($env);
+  }
+
+  public function setEnv($env) {
+    $this->env = $env;
+    $this->host = self::getHost($env);
+  }
+
+  public function getEnv() {
+    return $this->env;
+  }
+
+  private static function getHost($env) {
+    switch ($env) {
+      case "dev":
+        return "localhost:8081";
+      default:
+        return "test.undostres.com.mx";
+    }
   }
 
   public function handlePayload() {
