@@ -96,7 +96,7 @@ class SDK {
 
       return json_encode($refund->requestRefund());
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       return json_encode($e->getMessage());
     }
   }

@@ -2,21 +2,10 @@
 
 namespace UDT;
 
-use Opis\JsonSchema\{
-  Validator, Schema
-};
+use Opis\JsonSchema\Schema;
+use Opis\JsonSchema\Validator;
 
 class Utils {
-
-  const SCHEMAS_DIR = __DIR__ . "/Schemas/";
-
-  public static function isValidUrl($url) {
-    $url = filter_var($url, FILTER_SANITIZE_URL);
-    if (!str_starts_with($url, "undostres")){
-      return false;
-    }
-    return filter_var($url, FILTER_VALIDATE_URL);
-  }
   
   public static function request($url, $payloadJSON, $appKey, $appToken) {
     $curl = curl_init();
@@ -56,8 +45,8 @@ class Utils {
   }
 
 
-  public static function validateResponse($data, $schemaPath) {
-    $schemaPath = self::SCHEMAS_DIR . $schemaPath;
+  public static function validateResponse($data, $schemaFile) {
+    $schemaPath = __DIR__ . "/Schemas/" . $schemaFile;
     $schema = Schema::fromJsonString(file_get_contents($schemaPath));
 
     $validator = new Validator();
@@ -65,7 +54,7 @@ class Utils {
     $result = $validator->schemaValidation($data, $schema);
 
     if (!$result->isValid()) {
-      throw new \Exception($result->error());
+      throw new \Exception($result->getFirstError(), 500);
     }
   }
 
