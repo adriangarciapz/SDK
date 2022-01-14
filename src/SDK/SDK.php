@@ -5,6 +5,7 @@ namespace UDT\SDK;
 use UDT\Payment\Payment;
 use UDT\Cancel\Cancel;
 use UDT\Refund\Refund;
+use UDT\Utils;
 
 class SDK {
 
