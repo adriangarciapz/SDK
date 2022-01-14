@@ -62,4 +62,15 @@ class Utils {
     }
   }
 
+  public static function encodePayload($payload) {
+    $payloadJSON = json_encode($payload);
+
+    if (json_last_error() != JSON_ERROR_NONE)
+      throw new \InvalidArgumentException(
+        "The payload is not JSON encodable :: " . json_last_error_msg(),
+        400);
+
+    return $payloadJSON;
+  }
+
 }

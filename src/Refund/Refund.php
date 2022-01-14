@@ -6,7 +6,7 @@ use UDT\Utils;
 
 class Refund {
 
-  const REFUND_URL = "/api/v1/superapp/{paymentId}/cancellations";
+  const REFUND_URL = "/api/v1/superapp/{paymentId}/refunds";
 
   private $refundEndpoint;
   private $paymentId;

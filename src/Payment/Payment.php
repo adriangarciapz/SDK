@@ -22,16 +22,7 @@ class Payment {
 
   public function setPayload($payload) {
     $this->payloadObj = $payload;
-    $this->payloadJSON = json_encode($payload);
-
-    if (json_last_error() != JSON_ERROR_NONE)
-      throw new \InvalidArgumentException(
-        "The payload is not JSON encodable :: " . json_last_error_msg(),
-        400);
-  }
-
-  public function getPayload() {
-    return $this->payloadObj;
+    $this->payloadJSON = Utils::encodePayload($payload);
   }
 
   public function requestPayment() {
