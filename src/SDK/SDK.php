@@ -133,7 +133,7 @@ class SDK {
       $this->host,
       $this->appKey,
       $this->appToken,
-      $cancelData["paymentId"]
+      $cancelData
     );
 
     $response = $cancel->requestCancel();

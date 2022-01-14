@@ -22,12 +22,12 @@ class Cancel {
    * @param $appToken
    * @param $paymentId
    */
-  public function __construct($host, $appKey, $appToken, $paymentId) {
+  public function __construct($host, $appKey, $appToken, $payload) {
     $this->cancelEndpoint = $host . self::CANCEL_URL;
     $this->appKey        = $appKey;
     $this->appToken      = $appToken;
-    $this->paymentId     = $paymentId;
-    $this->requestId     = $paymentId . date("YmdHisu");
+    $this->paymentId     = $payload["paymentId"];
+    $this->requestId     = $payload["paymentId"] . date("YmdHisu");
 
     $payload = [
       "paymentId"     => $this->paymentId,
