@@ -45,6 +45,7 @@ class Utils {
   }
 
   public static function validateData($data, $schemaFile, $code = 400) {
+    $data = json_decode(json_encode($data), false);
     $schemaPath = __DIR__ . "/Schemas/" . $schemaFile;
     $schema = Schema::fromJsonString(file_get_contents($schemaPath));
 
