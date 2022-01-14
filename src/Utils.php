@@ -54,7 +54,11 @@ class Utils {
     $result = $validator->schemaValidation($data, $schema);
 
     if (!$result->isValid()) {
-      throw new \Exception($result->getFirstError(), 500);
+      $error = $result->getFirstError();
+      $field = implode('->', $error->dataPointer());
+      $field = empty($field) ? 'body' : $field;
+      $errorMsg = "Invalid data in $field";
+      throw new \Exception($errorMsg, 500);
     }
   }
 
