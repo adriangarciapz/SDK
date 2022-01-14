@@ -15,6 +15,13 @@ class Cancel {
   private $requestId;
   private $payloadJSON;
 
+  /**
+   * Construct a new cancel order
+   * @param $host
+   * @param $appKey
+   * @param $appToken
+   * @param $paymentId
+   */
   public function __construct($host, $appKey, $appToken, $paymentId) {
     $this->cancelEndpoint = $host . self::CANCEL_URL;
     $this->appKey        = $appKey;
@@ -32,11 +39,24 @@ class Cancel {
     $this->cancelEndpoint = $this->createCancelUrl($host, $paymentId);
   }
 
+  /**
+   * Creates the endpoint where the cancellation should be requested.
+   *
+   * @param string $host
+   * @param string $paymentId
+   * @return string
+   */
   public function createCancelUrl($host, $paymentId) {
     $subject = $host . self::CANCEL_URL;
     return str_replace("{paymentId}", $paymentId, $subject);
   }
 
+  /**
+   * Communicate with server to request a cancellation.
+   *
+   * @return array
+   * @throws \Exception if the cancellation is unable to request.
+   */
   public function requestCancel() {
     if (!isset($this->payloadJSON))
       throw new \Exception("Payload not set");

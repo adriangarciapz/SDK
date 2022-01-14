@@ -17,6 +17,16 @@ class Refund {
   private $requestId;
   private $payloadJSON;
 
+  /**
+   * Construct a new refund order
+   *
+   * @param $host
+   * @param $appKey
+   * @param $appToken
+   * @param $paymentId
+   * @param $transactionId
+   * @param $value
+   */
   public function __construct($host, $appKey, $appToken, $paymentId, $transactionId, $value) {
     $this->refundEndpoint = $host . self::REFUND_URL;
     $this->appKey         = $appKey;
@@ -38,11 +48,24 @@ class Refund {
     $this->refundEndpoint = $this->createRefundUrl($host, $paymentId);
   }
 
+  /**
+   * Creates the endpoint where the refund should be requested.
+   *
+   * @param $host
+   * @param $paymentId
+   * @return string
+   */
   public function createRefundUrl($host, $paymentId) {
     $subject = $host . self::REFUND_URL;
     return str_replace("{paymentId}", $paymentId, $subject);
   }
 
+  /**
+   * Communicate with server to request a refund.
+   *
+   * @return array
+   * @throws \Exception if the refund is unable to request.
+   */
   public function requestRefund() {
     if (!isset($this->payloadJSON))
       throw new \Exception("Payload not set");

@@ -9,6 +9,18 @@ use UDT\Utils;
 
 class SDK {
 
+  private $appKey;
+  private $appToken;
+  private $env;
+  private $host;
+
+  /**
+   * Constructs a new SDK object able to communicate with the UnDosTres' API.
+   *
+   * @param string $appKey   Merchant's app key
+   * @param string $appToken Merchant's app token
+   * @param string $env      Environment where the SDK is running
+   */
   public function __construct($appKey, $appToken, $env = "dev") {
     $this->appKey   = $appKey;
     $this->appToken = $appToken;
@@ -26,6 +38,12 @@ class SDK {
     return $this->env;
   }
 
+  /**
+   * Get corresponding host URL given the environment.
+   *
+   * @param string $env
+   * @return string
+   */
   private static function getHost($env) {
     switch ($env) {
       case "dev":
@@ -35,6 +53,11 @@ class SDK {
     }
   }
 
+  /**
+   * Receive POST data and create a new order for UnDosTres' API.
+   *
+   * @return array
+   */
   public function handlePayload() {
     $requestJSON = file_get_contents("php://input");
 
@@ -73,10 +96,19 @@ class SDK {
     }
   }
 
+  /**
+   * @param array $paymentData Data to create the payment order.
+   * @return array
+   * @throws \Exception if any step on the order creation or request fails.
+   */
   public function createPayment($paymentData) {
-    $payment = new Payment($this->host, $this->appKey, $this->appToken);
+    $payment = new Payment(
+      $this->host,
+      $this->appKey,
+      $this->appToken,
+      $paymentData
+    );
 
-    $payment->setPayload($paymentData);
     $response = $payment->requestPayment();
 
     $queryParams = [];
@@ -91,6 +123,11 @@ class SDK {
       ];
   }
 
+  /**
+   * @param array $cancelData Data to create the cancellation order.
+   * @return array
+   * @throws \Exception if any step on the order creation or request fails.
+   */
   public function createCancel($cancelData) {
     $cancel = new Cancel(
       $this->host,
@@ -109,6 +146,11 @@ class SDK {
     ];
   }
 
+  /**
+   * @param array $refundData Data to create the cancellation order.
+   * @return array
+   * @throws \Exception if any step on the order creation or request fails.
+   */
   public function createRefund($refundData) {
     $refund = new Refund(
       $this->host,
