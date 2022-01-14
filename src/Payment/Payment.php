@@ -30,7 +30,7 @@ class Payment {
       throw new \Exception("Payload not set", 400);
 
     $response = Utils::request($this->createEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
-    Utils::validateResponse($response, "SuperappCreatePaymentResponse.json");
+    Utils::validateData($response, "SuperappCreatePaymentResponse.json", 500);
 
     return $response;
   }

@@ -44,8 +44,7 @@ class Utils {
     return $decodedJSON;
   }
 
-
-  public static function validateResponse($data, $schemaFile) {
+  public static function validateData($data, $schemaFile, $code = 400) {
     $schemaPath = __DIR__ . "/Schemas/" . $schemaFile;
     $schema = Schema::fromJsonString(file_get_contents($schemaPath));
 
@@ -58,7 +57,7 @@ class Utils {
       $field = implode('->', $error->dataPointer());
       $field = empty($field) ? 'body' : $field;
       $errorMsg = "Invalid data in $field";
-      throw new \Exception($errorMsg, 500);
+      throw new \Exception($errorMsg, $code);
     }
   }
 

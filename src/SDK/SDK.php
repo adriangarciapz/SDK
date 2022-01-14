@@ -45,14 +45,18 @@ class SDK {
     $body = json_decode($requestJSON, true);
 
     try {
-      if(isset($body["payment"]))
+      if(isset($body["payment"])) {
+        Utils::validateData($body["payment"], "SuperappCreatePaymentRequest.json", 400);
         $response = $this->createPayment($body["payment"]);
-
-      else if(isset($body["cancel"]))
+      }
+      else if(isset($body["cancel"])) {
+        Utils::validateData($body["payment"], "SuperappCancelPaymentRequest.json", 400);
         $response = $this->createCancel($body["cancel"]);
-
-      else if(isset($body["refund"]))
+      }
+      else if(isset($body["refund"])) {
+        Utils::validateData($body["payment"], "SuperappRefundPaymentRequest.json", 400);
         $response = $this->createRefund($body["refund"]);
+      }
     }
     catch (\Exception $e) {
       $response = [
