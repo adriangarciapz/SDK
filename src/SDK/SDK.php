@@ -51,11 +51,11 @@ class SDK {
         $response = $this->createPayment($body["payment"]);
       }
       else if(isset($body["cancel"])) {
-        Utils::validateData($body["payment"], "SuperappCancelPaymentRequest.json", 400);
+        Utils::validateData($body["cancel"], "SuperappCancelPaymentRequest.json", 400);
         $response = $this->createCancel($body["cancel"]);
       }
       else if(isset($body["refund"])) {
-        Utils::validateData($body["payment"], "SuperappRefundPaymentRequest.json", 400);
+        Utils::validateData($body["refund"], "SuperappRefundPaymentRequest.json", 400);
         $response = $this->createRefund($body["refund"]);
       }
     }
