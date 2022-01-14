@@ -29,12 +29,12 @@ class Cancel {
 
     $this->payloadJSON = Utils::encodePayload($payload);
 
-    $this->createCancelUrl($host, $paymentId);
+    $this->cancelEndpoint = $this->createCancelUrl($host, $paymentId);
   }
 
   public function createCancelUrl($host, $paymentId) {
-    $this->cancelEndpoint = $host . self::CANCEL_URL;
-    $this->cancelEndpoint = str_replace("{paymentId}", $paymentId, $this->cancelEndpoint);
+    $subject = $host . self::CANCEL_URL;
+    return str_replace("{paymentId}", $paymentId, $subject);
   }
 
   public function requestCancel() {

@@ -4,6 +4,7 @@ namespace UDT\SDK;
 
 use UDT\Payment\Payment;
 use UDT\Cancel\Cancel;
+use UDT\Refund\Refund;
 
 class SDK {
 
@@ -49,6 +50,9 @@ class SDK {
 
       else if(isset($body["cancel"]))
         $response = $this->createCancel($body["cancel"]);
+
+      else if(isset($body["refund"]))
+        $response = $this->createRefund($body["refund"]);
     }
     catch (\Exception $e) {
       $response = [
@@ -89,6 +93,28 @@ class SDK {
       $this->appToken,
       $cancelData["paymentId"]
     );
+
+    $response = $cancel->requestCancel();
+
+    return [
+      "code" => 200,
+      "body" => [
+        "status" => "success"
+      ]
+    ];
+  }
+
+  public function createRefund($refundData) {
+    $refund = new Refund(
+      $this->host,
+      $this->appKey,
+      $this->appToken,
+      $refundData["paymentId"],
+      $refundData["transactionId"],
+      round(floatval($refundData["value"]), 2)
+    );
+
+    $response = $refund->requestRefund();
 
     return [
       "code" => 200,
