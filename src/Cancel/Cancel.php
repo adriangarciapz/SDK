@@ -36,7 +36,7 @@ class Cancel {
 
     $this->payloadJSON = Utils::encodePayload($payload);
 
-    $this->cancelEndpoint = $this->createCancelUrl($host, $paymentId);
+    $this->cancelEndpoint = $this->createCancelUrl($host, $this->paymentId);
   }
 
   /**
