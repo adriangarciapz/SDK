@@ -44,7 +44,10 @@ class Cancel {
     if (strpos($this->cancelEndpoint, "{paymentId}") !== false)
       throw new \Exception("paymentId not set in URL");
 
-    return Utils::request($this->cancelEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
+    $response = Utils::request($this->cancelEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
+    Utils::validateData($response, "SuperappCancelPaymentResponse.json", 500);
+
+    return $response;
   }
 
 }

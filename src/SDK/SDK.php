@@ -9,11 +9,10 @@ use UDT\Utils;
 
 class SDK {
 
-  public function __construct($appKey, $appToken, $env = "dev", $validateRequests = false) {
+  public function __construct($appKey, $appToken, $env = "dev") {
     $this->appKey   = $appKey;
     $this->appToken = $appToken;
     $this->env      = $env;
-    $this->validateRequests = $validateRequests;
 
     $this->host = self::getHost($env);
   }
@@ -48,15 +47,15 @@ class SDK {
 
     try {
       if(isset($body["payment"])) {
-        if ($this->validateRequests) Utils::validateData($body["payment"], "SuperappCreatePaymentRequest.json", 400);
+        Utils::validateData($body["payment"], "SuperappCreatePaymentRequest.json", 400);
         $response = $this->createPayment($body["payment"]);
       }
       else if(isset($body["cancel"])) {
-        if ($this->validateRequests) Utils::validateData($body["cancel"], "SuperappCancelPaymentRequest.json", 400);
+        Utils::validateData($body["cancel"], "SuperappCancelPaymentRequest.json", 400);
         $response = $this->createCancel($body["cancel"]);
       }
       else if(isset($body["refund"])) {
-        if ($this->validateRequests) Utils::validateData($body["refund"], "SuperappRefundPaymentRequest.json", 400);
+        Utils::validateData($body["refund"], "SuperappRefundPaymentRequest.json", 400);
         $response = $this->createRefund($body["refund"]);
       }
     }

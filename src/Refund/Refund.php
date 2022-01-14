@@ -50,7 +50,10 @@ class Refund {
     if (strpos($this->refundEndpoint, "{paymentId}") !== false)
       throw new \Exception("paymentId not set in URL");
 
-    return Utils::request($this->refundEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
+    $response = Utils::request($this->refundEndpoint, $this->payloadJSON, $this->appKey, $this->appToken);
+    Utils::validateData($response, "SuperappRefundPaymentResponse.json", 500);
+
+    return $response;
   }
 
 }
