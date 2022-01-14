@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "required": ["paymentId", "cancellationId", "code", "message", "requestId"],
+  "properties": {
+    "paymentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cancellationId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
