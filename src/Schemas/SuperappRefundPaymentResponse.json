@@ -7,7 +7,7 @@
       "minLength": 1
     },
     "refundId": {
-      "type": "string",
+      "type": "number",
       "minLength": 1
     },
     "value": {
@@ -15,7 +15,7 @@
       "minLength": 1
     },
     "code": {
-      "type": "string",
+      "type": "number",
       "minLength": 1
     },
     "message": {

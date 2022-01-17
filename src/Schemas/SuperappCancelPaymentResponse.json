@@ -7,11 +7,11 @@
       "minLength": 1
     },
     "cancellationId": {
-      "type": "string",
+      "type": "number",
       "minLength": 1
     },
     "code": {
-      "type": "string",
+      "type": "number",
       "minLength": 1
     },
     "message": {
