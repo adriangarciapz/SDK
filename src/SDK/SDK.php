@@ -54,12 +54,12 @@ class SDK {
   }
 
   /**
-   * Receive POST data and create a new order for UnDosTres' API.
+   * Receive data as JSON and create a new order for UnDosTres' API.
    *
+   * @param string $requestJSON
    * @return array
    */
-  public function handlePayload() {
-    $requestJSON = file_get_contents("php://input");
+  public function handlePayload($requestJSON) {
 
     $response = [
       "code" => 400,
